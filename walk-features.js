@@ -54,6 +54,7 @@ function scheduleLabels(){if(!labelFrame)labelFrame=requestAnimationFrame(()=>{l
 function localBox(el){const root=document.querySelector('.map-panel').getBoundingClientRect(),r=el.getBoundingClientRect();return {x:r.left-root.left,y:r.top-root.top,w:r.width,h:r.height};}
 function layoutLandmarks(){
   if(!loaded||!landmarkLabels.length)return;
+  if(typeof updateSpeechTail==='function')updateSpeechTail();
   const panel=document.querySelector('.map-panel'),width=panel.clientWidth,height=panel.clientHeight;
   positionArrival();
   const blockers=[localBox(document.querySelector('.map-top')),localBox(document.querySelector('.player')),localBox(document.querySelector('.map-legend')),localBox(labelCount)];

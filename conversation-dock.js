@@ -6,9 +6,32 @@ document.querySelector('.map-panel').append(conversationDock);
 // The avatar is not attached to the document until the asynchronous map load.
 // Query its detached subtree directly; document lookup returns null here.
 conversationDock.append(walker.querySelector('#bubble'),arrivalCard);
-// Keep the map's projected coordinate system unchanged: the dock is a sibling.
+// Keep the map full-width while anchoring speech in its upper-right corner.
 window.addEventListener('resize',()=>{if(map)map.resize();});
 if(map)map.resize();
+const speechTail=document.createElement('span');
+speechTail.className='speech-direction-tail';speechTail.hidden=true;speechTail.setAttribute('aria-hidden','true');
+document.querySelector('.map-panel').append(speechTail);
+function updateSpeechTail(){
+  speechTail.hidden=!marker||!$('speech').checked||conversationDock.classList.contains('is-folded');
+  if(speechTail.hidden)return;
+  const box=localBox(conversationDock),panel=document.querySelector('.map-panel').getBoundingClientRect(),avatar=walker.getBoundingClientRect();
+  const cx=box.x+box.w/2,cy=box.y+box.h/2,dx=avatar.left+avatar.width/2-panel.left-cx,dy=avatar.top-panel.top-cy;
+  const scale=Math.min(box.w/2/Math.max(Math.abs(dx),.01),box.h/2/Math.max(Math.abs(dy),.01));
+  speechTail.style.left=`${cx+dx*scale}px`;speechTail.style.top=`${cy+dy*scale-8}px`;
+  speechTail.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;
+}
+const dockToggle=document.createElement('button');dockToggle.className='dock-toggle';dockToggle.textContent='대화 접기';dockToggle.setAttribute('aria-expanded','true');
+conversationDock.prepend(dockToggle);
+dockToggle.onclick=()=>{const folded=conversationDock.classList.toggle('is-folded');dockToggle.textContent=folded?'대화 펼치기':'대화 접기';dockToggle.setAttribute('aria-expanded',String(!folded));scheduleLabels();};
+const mobileMapTools=document.createElement('div');mobileMapTools.className='mobile-map-tools';mobileMapTools.setAttribute('aria-label','모바일 산책 지도 조작');
+document.querySelector('.map-panel').before(mobileMapTools);
+const followButton=document.createElement('button');followButton.textContent='따라가기';followButton.setAttribute('aria-pressed','false');
+followButton.onclick=()=>{const on=!$('follow').checked;$('follow').checked=on;followButton.setAttribute('aria-pressed',String(on));followButton.textContent=on?'따라가는 중':'따라가기';if(marker&&map)map.easeTo({center:marker.getLngLat()});};
+$('follow').addEventListener('change',()=>{followButton.setAttribute('aria-pressed',String($('follow').checked));followButton.textContent=$('follow').checked?'따라가는 중':'따라가기';});
+const avatarButton=document.createElement('button');avatarButton.textContent='아바타 위치';avatarButton.onclick=()=>{if(marker&&map)map.easeTo({center:marker.getLngLat(),zoom:16.5});};
+const overviewButton=document.createElement('button');overviewButton.textContent='코스 전체';overviewButton.onclick=()=>{if(loaded)fitRoute();};
+mobileMapTools.append(followButton,avatarButton,overviewButton);
 const setupBaseLandmarks=setupLandmarks;
 setupLandmarks=function(){
   const store=data.stores.find(s=>s.id==='0127025948');

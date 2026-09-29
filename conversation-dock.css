@@ -7,3 +7,10 @@
 .conversation-dock #arrival-card h3{font-size:19px}
 .conversation-dock #arrival-card p{font-size:14px}
 @media(max-width:760px){.conversation-dock{top:76px;right:46px;width:180px;max-height:170px}.conversation-dock .speech-bubble{font-size:14px;padding:9px 11px}.conversation-dock .bubble-leg{font-size:12px}}
+.speech-direction-tail{position:absolute;width:20px;height:16px;clip-path:polygon(0 0,100% 50%,0 100%);background:#fff;transform-origin:0 50%;z-index:5;pointer-events:none}
+.speech-direction-tail[hidden]{display:none}
+.dock-toggle{display:block;margin-left:auto;border:0;border-radius:12px;font-size:12px;min-height:36px;padding:6px 12px;color:#456079;background:#f0f5fa}
+.conversation-dock.is-folded .speech-bubble,.conversation-dock.is-folded #arrival-card{display:none}
+.conversation-dock.is-folded{width:auto}
+.mobile-map-tools{display:none}
+@media(max-width:760px){.mobile-map-tools{display:flex;gap:6px}.mobile-map-tools button{flex:1;min-width:0;min-height:44px;font-size:14px;padding:8px 4px}.mobile-map-tools button[aria-pressed=true]{background:#0064e0;color:white}.map-focused .mobile-map-tools{display:none}.dock-toggle{min-height:44px}}
