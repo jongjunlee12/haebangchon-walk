@@ -3,7 +3,9 @@ const conversationDock=document.createElement('aside');
 conversationDock.className='conversation-dock';
 conversationDock.setAttribute('aria-label','산책 대화와 장소 안내');
 document.querySelector('.workspace').append(conversationDock);
-conversationDock.append($('bubble'),arrivalCard);
+// The avatar is not attached to the document until the asynchronous map load.
+// Query its detached subtree directly; document lookup returns null here.
+conversationDock.append(walker.querySelector('#bubble'),arrivalCard);
 // Keep the map's projected coordinate system unchanged: the dock is a sibling.
 window.addEventListener('resize',()=>{if(map)map.resize();});
 if(map)map.resize();
