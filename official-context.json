@@ -1,0 +1,97 @@
+{
+  "toilets": [
+    {
+      "name": "은성교회",
+      "address": "서울특별시 용산구 신흥로9길 20",
+      "coordinates": [
+        126.98705315,
+        37.54298867
+      ],
+      "hours": "정시(09:00~18:00)",
+      "accessible": "자료 없음"
+    },
+    {
+      "name": "수복천입구화장실",
+      "address": "서울특별시 용산구 남산공원길 126",
+      "coordinates": [
+        126.99075935,
+        37.55085683
+      ],
+      "hours": "상시(24시간)",
+      "accessible": "남자|여자"
+    },
+    {
+      "name": "용산2가동주민센터,용중지구대용산치안센터",
+      "address": "서울특별시 용산구 신흥로 90",
+      "coordinates": [
+        126.98555236,
+        37.54606903
+      ],
+      "hours": "정시(09:00~18:00)",
+      "accessible": "자료 없음"
+    },
+    {
+      "name": "신흥시장화장실",
+      "address": "서울특별시 용산구 신흥로 95-9",
+      "coordinates": [
+        126.98508552,
+        37.54532375
+      ],
+      "hours": "상시(24시간)",
+      "accessible": "자료 없음"
+    }
+  ],
+  "toiletSource": "https://data.seoul.go.kr/dataList/OA-22586/S/1/datasetView.do",
+  "toiletUpdated": "2026-09-29",
+  "tourism": {
+    "area": "용산2가동",
+    "period": "2025.09–2026.08",
+    "population": "내국인 외지인 방문자 · 성·연령 파악 가능한 표본",
+    "ages": [
+      {
+        "label": "10대 미만",
+        "percent": 0.27
+      },
+      {
+        "label": "10대",
+        "percent": 3.3
+      },
+      {
+        "label": "20대",
+        "percent": 21.13
+      },
+      {
+        "label": "30대",
+        "percent": 23.42
+      },
+      {
+        "label": "40대",
+        "percent": 16.73
+      },
+      {
+        "label": "50대",
+        "percent": 17.16
+      },
+      {
+        "label": "60대",
+        "percent": 12.6
+      },
+      {
+        "label": "70대",
+        "percent": 5.39
+      }
+    ],
+    "sexes": [
+      {
+        "label": "남성",
+        "percent": 55.47
+      },
+      {
+        "label": "여성",
+        "percent": 44.53
+      }
+    ],
+    "source": "https://datalab.visitkorea.or.kr/datalab/portal/bda/getInquiryBySexAndAge.do"
+  },
+  "downloaded": "2026-09-30"
+}
