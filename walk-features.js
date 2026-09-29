@@ -63,15 +63,15 @@ function layoutLandmarks(){
   const items=landmarkLabels.map(({poi,el})=>{
     const index=stopIds.indexOf(poi.id);el.textContent=`${index>=0?`${index+1} · `:''}${poi.name}`;el.classList.toggle('on-route',index>=0);
     el.style.visibility='hidden';el.hidden=false;
-    const p=map.project(poi.placeCoordinates);return {id:poi.id,px:p.x,py:p.y,w:el.offsetWidth,h:el.offsetHeight,priority:index>=0?index:-1};
-  }).sort((a,b)=>(a.priority<0?100:a.priority)-(b.priority<0?100:b.priority));
+    const p=map.project(poi.placeCoordinates);return {id:poi.id,px:p.x,py:p.y,w:el.offsetWidth,h:el.offsetHeight,priority:poi.pinned?-2:index>=0?index:100};
+  }).sort((a,b)=>a.priority-b.priority);
   const placed=WalkLayout.placeLabels(items,width,height,blockers);leaderSvg.replaceChildren();
   for(const {el} of landmarkLabels)el.hidden=true;
   for(const item of placed){
     const {el}=landmarkLabels.find(l=>l.poi.id===item.id);el.hidden=false;el.style.visibility='visible';el.style.left=`${item.x}px`;el.style.top=`${item.y}px`;
     const lineEl=document.createElementNS(leaderSvg.namespaceURI,'line');lineEl.setAttribute('x1',item.px);lineEl.setAttribute('y1',item.py);lineEl.setAttribute('x2',Math.max(item.x,Math.min(item.x+item.w,item.px)));lineEl.setAttribute('y2',Math.max(item.y,Math.min(item.y+item.h,item.py)));leaderSvg.append(lineEl);
   }
-  labelCount.textContent=`거점 ${placed.length}/20 표시 · 확대하면 더 보여요`;
+  labelCount.textContent=`거점 ${placed.length}/${landmarkLabels.length} 표시 · 확대하면 더 보여요`;
 }
 function renderAlternatives(){
   hideArrival();
@@ -89,7 +89,7 @@ function showArrival(stop,index,arrived=true){
   cancelArrivalAuto();
   arrivalStop=stop;arrivalIndex=index;arrivalCard.replaceChildren();arrivalCard.hidden=false;
   const close=document.createElement('button');close.className='arrival-close';close.textContent='×';close.setAttribute('aria-label','장소 카드 닫기');close.onclick=hideArrival;
-  const img=document.createElement('img');img.src=stop.image;img.alt=stop.photo?`${stop.name} 외관 사진`:`${stop.name} 인근 건물 데이터 모형`;img.onerror=()=>{img.hidden=true;};
+  const img=document.createElement('img');if(stop.image)img.src=stop.image;else img.hidden=true;img.alt=stop.photo?`${stop.name} 외관 사진`:`${stop.name} 인근 건물 데이터 모형`;img.onerror=()=>{img.hidden=true;};
   const tag=document.createElement('small');tag.textContent=`${arrived?`${index+1}번 도착`:'거점 안내'} · ${stop.kind}`;
   const title=document.createElement('h3');title.textContent=stop.name;
   const info=stop.info;
@@ -126,11 +126,12 @@ function showArrival(stop,index,arrived=true){
     },10000);
   }
   // Offset only for the portion of the screen-edge card overlapping the map.
-  if(arrived){const panel=document.querySelector('.map-panel').getBoundingClientRect(),card=arrivalCard.getBoundingClientRect();const phone=matchMedia('(max-width:760px)').matches;const overlap=phone?Math.max(0,panel.bottom-card.top):Math.max(0,panel.right-card.left);map.easeTo({center:stop.coordinates,offset:phone?[0,-Math.min(overlap/2,panel.height/4)]:[-overlap/2,0],duration:500});}
+  if(arrived)map.easeTo({center:stop.coordinates,offset:[0,0],duration:500});
   positionArrival();scheduleLabels();
 }
 function hideArrival(){cancelArrivalAuto();arrivalCard.hidden=true;arrivalStop=null;$('bubble').hidden=!$('speech').checked;scheduleLabels();}
 function positionArrival(){
+  if(arrivalCard.closest('.conversation-dock'))return;
   if(!arrivalStop||arrivalCard.hidden)return;
   const top=Math.min(96,Math.max(12,innerHeight*.12));
   arrivalCard.style.maxHeight=`${Math.max(0,innerHeight-top-16)}px`;
