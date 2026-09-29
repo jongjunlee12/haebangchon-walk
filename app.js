@@ -32,6 +32,7 @@ function setPlaying(value) {
 }
 function fitRoute() {
   const bounds = new maplibregl.LngLatBounds(); data.routes.filter(r=>r.theme===route.theme).forEach(r=>r.coordinates.forEach(p=>bounds.extend(p)));
+  data.landmarks.filter(p=>p.pinned).forEach(p=>bounds.extend(p.placeCoordinates));
   const phone=matchMedia('(max-width:760px)').matches;
   map.fitBounds(bounds,{padding:phone?{top:265,bottom:120,left:35,right:35}:{top:160,bottom:200,left:50,right:315},duration:900,maxZoom:17});
 }

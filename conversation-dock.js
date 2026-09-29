@@ -34,6 +34,7 @@ const overviewButton=document.createElement('button');overviewButton.textContent
 mobileMapTools.append(followButton,avatarButton,overviewButton);
 const setupBaseLandmarks=setupLandmarks;
 setupLandmarks=function(){
+  if(!data.landmarks.some(p=>p.id==='sunset-building'))data.landmarks.push({id:'sunset-building',name:'선셋빌딩',kind:'거점',stay:0,coordinates:[126.9806,37.5492],placeCoordinates:[126.9806,37.5492],pinned:true,info:{summary:'사용자가 지정한 선셋빌딩입니다. 표시 위치는 사용자 제공 근사 좌표(위도 37.5492, 경도 126.9806)를 사용합니다.',highlights:['기본 표시 거점','사용자 제공 근사 위치'],tip:'정확한 건물 경계와 출입구는 현장에서 확인해 주세요.'}});
   const store=data.stores.find(s=>s.id==='0127025948');
   if(store&&!data.landmarks.some(p=>p.id==='vinvin'))data.landmarks.push({id:'vinvin',name:'방방',kind:'식사',stay:45,storeId:store.id,coordinates:store.coordinates,placeCoordinates:store.coordinates,pinned:true,info:{summary:'신흥로 99-9에 있는 방방(VINVIN)입니다. 위치는 제공된 점포 데이터 기준이며 메뉴·영업시간은 방문 전에 확인해 주세요.',highlights:['신흥시장 골목','방방(VINVIN)'],tip:'영업 여부와 운영시간은 최신 매장 안내를 확인해 주세요.'}});
   const market=data.stores.find(s=>s.id==='0119641405');
