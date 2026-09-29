@@ -40,7 +40,7 @@ function setupLandmarks(){
   legend.title='건물속성 A9 용도 · UFID 우선 연결, 중복 시 연면적 합계가 큰 용도. 층수 × 3m';
   landmarkLabels=data.landmarks.map(poi=>{
     const el=document.createElement('button');el.className='landmark-label';el.title=poi.name;
-    el.onclick=()=>showArrival(poi,-1,false);labelLayer.append(el);
+    el.onclick=()=>poi.storeId?selectStore(poi.storeId,true):showArrival(poi,-1,false);labelLayer.append(el);
     const indexButton=document.createElement('button');indexButton.textContent=`${poi.name} · ${poi.kind}`;
     indexButton.onclick=()=>{map.flyTo({center:poi.placeCoordinates,zoom:16.5});showArrival(poi,-1,false);};
     $('landmark-index').append(indexButton);

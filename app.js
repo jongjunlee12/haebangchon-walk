@@ -126,7 +126,7 @@ function selectStore(id,fly) {
   const caption=document.createElement('div');caption.className='chart-caption';caption.innerHTML='<span></span><span></span>';caption.children[0].textContent=monthLabel(months[0]);caption.children[1].textContent=`${monthLabel(months.at(-1))} · 결측은 빈칸`;
   detail.append(eye,title,category);
   renderVisitorDetails(store,detail,[metrics,svg,caption],month);
-  if(fly) {map.flyTo({center:store.coordinates,zoom:17,pitch:$('view').getAttribute('aria-pressed')==='true'?52:0});document.querySelectorAll('.store-row').forEach(b=>b.classList.toggle('selected',b.firstChild.firstChild?.textContent===store.name));if(document.body.classList.contains('map-focused'))setMapFocus(false);hideArrival();requestAnimationFrame(()=>detail.scrollIntoView({behavior:'smooth',block:'start'}));}
+  if(fly) {setPlaying(false);hideArrival();map.flyTo({center:store.coordinates,zoom:17,pitch:$('view').getAttribute('aria-pressed')==='true'?52:0});document.querySelectorAll('.store-row').forEach(b=>b.classList.toggle('selected',b.firstChild.firstChild?.textContent===store.name));setMapFocus(false,detail);}
 }
 async function start() {
   $('speech').checked=true;

@@ -15,10 +15,21 @@ document.addEventListener('walk-route-change',()=>{
 const focusMapButton=document.createElement('button');focusMapButton.type='button';focusMapButton.textContent='지도 크게';focusMapButton.setAttribute('aria-pressed','false');
 document.querySelector('.map-top>div').append(focusMapButton);
 let beforeFocusScroll=0;
-function setMapFocus(active){
+function setMapFocus(active,scrollTarget=null){
   if(active)beforeFocusScroll=window.scrollY;
   document.body.classList.toggle('map-focused',active);focusMapButton.setAttribute('aria-pressed',String(active));focusMapButton.textContent=active?'원래 화면':'지도 크게';
-  requestAnimationFrame(()=>{if(map){map.resize();updatePlayerLayout();scheduleLabels();}if(!active)window.scrollTo(0,beforeFocusScroll);});
+  requestAnimationFrame(()=>{
+    if(map){map.resize();updatePlayerLayout();scheduleLabels();}
+    if(active)return;
+    if(scrollTarget){
+      // Wait for the fixed map and body scroll lock to finish relayout first.
+      requestAnimationFrame(()=>{
+        scrollTarget.setAttribute('tabindex','-1');
+        scrollTarget.focus({preventScroll:true});
+        scrollTarget.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+      });
+    }else window.scrollTo(0,beforeFocusScroll);
+  });
 }
 focusMapButton.onclick=()=>setMapFocus(!document.body.classList.contains('map-focused'));
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.body.classList.contains('map-focused')){setMapFocus(false);focusMapButton.focus();}});
