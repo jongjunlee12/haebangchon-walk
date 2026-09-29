@@ -33,7 +33,7 @@ function setPlaying(value) {
 function fitRoute() {
   const bounds = new maplibregl.LngLatBounds(); data.routes.filter(r=>r.theme===route.theme).forEach(r=>r.coordinates.forEach(p=>bounds.extend(p)));
   const phone=matchMedia('(max-width:760px)').matches;
-  map.fitBounds(bounds,{padding:phone?{top:125,bottom:120,left:40,right:40}:{top:160,bottom:275,left:70,right:70},duration:900,maxZoom:17});
+  map.fitBounds(bounds,{padding:phone?{top:265,bottom:120,left:35,right:35}:{top:160,bottom:200,left:50,right:315},duration:900,maxZoom:17});
 }
 function selectRoute() {
   route=data.routes[Number($('route').value)]; walked=0; lastSpeech='';

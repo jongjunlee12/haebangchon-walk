@@ -57,6 +57,7 @@ function layoutLandmarks(){
   const panel=document.querySelector('.map-panel'),width=panel.clientWidth,height=panel.clientHeight;
   positionArrival();
   const blockers=[localBox(document.querySelector('.map-top')),localBox(document.querySelector('.player')),localBox(document.querySelector('.map-legend')),localBox(labelCount)];
+  const dock=document.querySelector('.conversation-dock');if(dock)blockers.push(localBox(dock));
   if(!arrivalCard.hidden)blockers.push(localBox(arrivalCard));
   if(marker){const box=localBox(walker);blockers.push({x:box.x-4,y:box.y-4,w:box.w+8,h:box.h+8});if(!$('bubble').hidden)blockers.push(localBox($('bubble')));}
   const stopIds=route.stops.map(s=>s.id);
